@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -6,7 +7,7 @@ namespace ParallelProgrammingRevision
 {
     class Program
     {
-        static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             // RACE CONDITION
             Console.WriteLine("RACE CONDITION");
@@ -58,6 +59,23 @@ namespace ParallelProgrammingRevision
             });
             p1.Start();
             p2.Start();
+            
+            // ASYNC EVALUATION AND EXECUTION
+            List<string> subjects = new List<string> { "franz", "peter", "hans" };
+            Task ta1 = Task.Run(() =>
+            {
+                return $"Scanning {subjects[0]}";
+            });
+            Task ta2 = Task.Run(() =>
+            {
+                return $"Scanning {subjects[1]}";
+            });
+            Task ta3 = Task.Run(() =>
+            {
+                return( $"Scanning {subjects[2]}");
+            });
+            var x = await Task.WhenAll(ta1, ta2, ta3);
+            
         }
     }
 }
